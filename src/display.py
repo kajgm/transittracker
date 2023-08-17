@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
+from helpers import *
 
 
 class display:
@@ -28,7 +29,7 @@ class display:
         resJson = res.json()[0]
         closestSchedule = resJson['Schedules'][0]
         self.txt.set(closestSchedule['ExpectedLeaveTime'])
-        self.root.after(1000, self.show_time)
+        self.root.after(40*1000, self.show_time)
 
     def show_display(self):
         self.root.attributes("-fullscreen", True)
