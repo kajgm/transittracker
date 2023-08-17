@@ -7,7 +7,7 @@ from format import *
 from display import *
 
 # Flag for terminal only (False) or with display on Linux only (True)
-DISPLAY_FLAG = True
+DISPLAY_FLAG = False
 
 
 def main(args):
@@ -34,7 +34,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--display", required=False)
+    parser.add_argument(
+        "-d", "--display", required=False, default=False, action="store_true"
+    )
     args = parser.parse_args()
 
     try:
