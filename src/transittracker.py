@@ -14,7 +14,7 @@ def main(args):
     trnstApi = transitApi()
 
     if DISPLAY_FLAG:
-        dsp = display(trnstApi)
+        dsp = display(trnstApi, WAIT_TIME)
         dsp.show_display()
 
     while not DISPLAY_FLAG:

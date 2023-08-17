@@ -21,7 +21,7 @@ class display:
     scheduleFont = None
     scheduleLabel = None
 
-    def __init__(self, tApi):
+    def __init__(self, tApi, wtime):
         self.root = Tk()
 
         self.contextText = StringVar()
@@ -34,7 +34,7 @@ class display:
 
         self.contextLabel = ttk.Label(
             self.root,
-            textvariable=self.txt,
+            textvariable=self.contextText,
             font=self.contextFont,
             foreground="white",
             background="black",
