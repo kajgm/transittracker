@@ -29,7 +29,7 @@ class display:
         self.scheduleText = StringVar()
 
         self.contextFont = font.Font(family="Helvetica", size=20)
-        self.timeFont = font.Font(family="Helvetica", size=35, weight="bold")
+        self.timeFont = font.Font(family="Helvetica", size=50, weight="bold")
         self.scheduleFont = font.Font(family="Helvetica", size=10)
 
         self.contextLabel = ttk.Label(
@@ -54,9 +54,9 @@ class display:
             background="black",
         )
 
-        self.contextLabel.place(relx=0.5, rely=0.4, anchor=CENTER)
+        self.contextLabel.place(relx=0.5, rely=0.2, anchor=CENTER)
         self.timeLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
-        self.scheduleLabel.place(relx=0.5, rely=0.6, anchor=CENTER)
+        self.scheduleLabel.place(relx=0.5, rely=0.8, anchor=CENTER)
 
         self.trnstApi = tApi
         self.waitTime = wtime
@@ -70,7 +70,11 @@ class display:
         closestSchedule = resJson["Schedules"][0]
         self.contextText.set("The next bus leaves at")
         self.timeText.set(closestSchedule["ExpectedLeaveTime"])
-        self.scheduleText.set(getScheduleLabel(closestSchedule["ScheduleStatus"]))
+        self.scheduleText.set(
+            getScheduleLabel(closestSchedule["ScheduleStatus"])
+            + " - Last updated at "
+            + closestSchedule["LastUpdate"]
+        )
 
         self.root.after(self.waitTime * 1000, self.show_time)
 
