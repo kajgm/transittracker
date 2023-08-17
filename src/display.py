@@ -68,7 +68,11 @@ class display:
         res = self.trnstApi.get_stop_info()
         resJson = res.json()[0]
         closestSchedule = resJson["Schedules"][0]
-        self.contextText.set("The next bus leaves at")
+        self.contextText.set(
+            "The next bus leaves in "
+            + str(closestSchedule["ExpectedCountdown"])
+            + " at"
+        )
         self.timeText.set(closestSchedule["ExpectedLeaveTime"])
         self.scheduleText.set(
             "["

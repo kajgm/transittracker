@@ -5,7 +5,7 @@ WAIT_TIME = 45  # time in seconds
 
 
 def getScheduleLabel(scheduleSymbol):
-    label = ""
+    label = "On time"
 
     match scheduleSymbol:
         case "*":
