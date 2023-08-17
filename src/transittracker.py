@@ -2,35 +2,35 @@ import sys
 import os
 import argparse
 from api import *
+from helpers import *
+from format import *
 
-SOUND_FLAG = True
+# Flag for terminal only (False) or with display on Linux only (True)
+DISPLAY_FLAG = False
 
 
 def main(args):
-    '''
-    tApi = transitApi()
-    sound_flag = args.sound
-    if args.sound == None:
-        sound_flag = SOUND_FLAG
-    '''
 
     tApi = transitApi()
 
-    res = tApi.get_stop_info()
-    resJson = res.json()[0]
+    while (1):
 
-    for schedule in resJson['Schedules']:
-        print(schedule['ExpectedLeaveTime'])
-        print(schedule['ExpectedCountdown'])
-        print(schedule['ScheduleStatus'])
-        print(schedule['LastUpdate'])
-        print('')
+        res = tApi.get_stop_info()
+        resJson = res.json()[0]
+        closestSchedule = resJson['Schedules'][0]
+
+        print_status(closestSchedule['ExpectedCountdown'],
+                     closestSchedule['ExpectedLeaveTime'],
+                     closestSchedule['ScheduleStatus'],
+                     closestSchedule['LastUpdate'])
+
+        wait(WAIT_TIME)
 
 
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-s", "--sound", required=False)
+    parser.add_argument("-d", "--display", required=False)
     args = parser.parse_args()
 
     try:

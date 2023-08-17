@@ -6,7 +6,6 @@ import json
 API_ENDPOINT = 'http://api.translink.ca/RTTIAPI/V1/stops/'
 STOP = 53656
 TOP_PATH = os.path.realpath('..')
-# TOP_PATH = os.path.realpath('')
 CRED_PATH = TOP_PATH + '\\credentials.json'
 
 
