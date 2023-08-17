@@ -71,7 +71,7 @@ class display:
         self.contextText.set(
             "The next bus leaves in "
             + str(closestSchedule["ExpectedCountdown"])
-            + " at"
+            + "min at"
         )
         self.timeText.set(closestSchedule["ExpectedLeaveTime"])
         self.scheduleText.set(
