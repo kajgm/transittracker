@@ -21,7 +21,7 @@ class display:
     scheduleFont = None
     scheduleLabel = None
 
-    def __init__(self, tApi, wtime):
+    def __init__(self, tApi):
         self.root = Tk()
 
         self.contextText = StringVar()
