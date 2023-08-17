@@ -30,7 +30,7 @@ class display:
 
         self.contextFont = font.Font(family="Helvetica", size=20)
         self.timeFont = font.Font(family="Helvetica", size=50, weight="bold")
-        self.scheduleFont = font.Font(family="Helvetica", size=10)
+        self.scheduleFont = font.Font(family="Helvetica", size=20)
 
         self.contextLabel = ttk.Label(
             self.root,
@@ -71,8 +71,9 @@ class display:
         self.contextText.set("The next bus leaves at")
         self.timeText.set(closestSchedule["ExpectedLeaveTime"])
         self.scheduleText.set(
-            getScheduleLabel(closestSchedule["ScheduleStatus"])
-            + " - Last updated at "
+            "["
+            + getScheduleLabel(closestSchedule["ScheduleStatus"])
+            + "] - Last updated at "
             + closestSchedule["LastUpdate"]
         )
 
