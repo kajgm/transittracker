@@ -13,6 +13,8 @@ DISPLAY_FLAG = False
 def main(args):
     trnstApi = transitApi()
 
+    DISPLAY_FLAG = args.display
+
     if DISPLAY_FLAG:
         dsp = display(trnstApi, WAIT_TIME)
         dsp.show_display()
