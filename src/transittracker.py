@@ -11,14 +11,14 @@ DISPLAY_FLAG = False
 
 
 def main(args):
-    tApi = transitApi()
+    transitApi = transitApi()
 
     if DISPLAY_FLAG:
-        dsp = display(tApi)
+        dsp = display(transitApi)
         dsp.show_display()
 
     while not DISPLAY_FLAG:
-        res = tApi.get_stop_info()
+        res = transitApi.get_stop_info()
         resJson = res.json()[0]
         closestSchedule = resJson["Schedules"][0]
 
