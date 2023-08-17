@@ -7,7 +7,7 @@ from format import *
 from display import *
 
 # Flag for terminal only (False) or with display on Linux only (True)
-DISPLAY_FLAG = False
+DISPLAY_FLAG = True
 
 
 def main(args):
