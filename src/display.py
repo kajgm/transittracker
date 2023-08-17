@@ -6,7 +6,7 @@ from helpers import *
 
 class display:
     root = None
-    transitApi = None
+    trnstApi = None
     waitTime = None
 
     contextText = None
@@ -58,14 +58,14 @@ class display:
         self.timeLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.scheduleLabel.place(relx=0.5, rely=0.6, anchor=CENTER)
 
-        self.transitApi = tApi
+        self.trnstApi = tApi
         self.waitTime = wtime
 
     def quit(self, *args):
         self.root.destroy()
 
     def show_time(self):
-        res = self.transitApi.get_stop_info()
+        res = self.trnstApi.get_stop_info()
         resJson = res.json()[0]
         closestSchedule = resJson["Schedules"][0]
         self.contextText.set("The next bus leaves at")
