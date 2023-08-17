@@ -4,6 +4,7 @@ import argparse
 from api import *
 from helpers import *
 from format import *
+from display import *
 
 # Flag for terminal only (False) or with display on Linux only (True)
 DISPLAY_FLAG = False
@@ -13,7 +14,10 @@ def main(args):
 
     tApi = transitApi()
 
-    while (1):
+    if (DISPLAY_FLAG):
+        dsp = display(tApi)
+
+    while (not DISPLAY_FLAG):
 
         res = tApi.get_stop_info()
         resJson = res.json()[0]
