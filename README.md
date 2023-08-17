@@ -26,3 +26,15 @@ $ python -m pip install requests
 ```
 $ python transittracker.py
 ```
+
+3. If you are running this on a raspberry pi, you can enable the display option with an automatic startup script:
+
+```
+$ ./start-transittracker.sh
+```
+
+or
+
+```
+$ python transittracker.py -d
+```
