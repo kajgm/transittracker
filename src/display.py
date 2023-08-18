@@ -73,7 +73,7 @@ class display:
             + str(closestSchedule["ExpectedCountdown"])
             + "min at"
         )
-        self.timeText.set(closestSchedule["ExpectedLeaveTime"])
+        self.timeText.set(closestSchedule["ExpectedLeaveTime"].split(" ")[0])
         self.scheduleText.set(
             "["
             + getScheduleLabel(closestSchedule["ScheduleStatus"])
