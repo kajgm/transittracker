@@ -42,6 +42,6 @@ class transitApi:
             print(
                 f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
             )
-            return False
+            res = {"status_code": "-1", "reason": "Failed to make requests call"}
 
         return res

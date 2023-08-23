@@ -21,15 +21,18 @@ def main(args):
 
     while not DISPLAY_FLAG:
         res = trnstApi.get_stop_info()
-        resJson = res.json()[0]
-        closestSchedule = resJson["Schedules"][0]
+        if res.status_code == 200:
+            resJson = res.json()[0]
+            closestSchedule = resJson["Schedules"][0]
 
-        print_status(
-            closestSchedule["ExpectedCountdown"],
-            closestSchedule["ExpectedLeaveTime"],
-            closestSchedule["ScheduleStatus"],
-            closestSchedule["LastUpdate"],
-        )
+            print_status(
+                closestSchedule["ExpectedCountdown"],
+                closestSchedule["ExpectedLeaveTime"],
+                closestSchedule["ScheduleStatus"],
+                closestSchedule["LastUpdate"],
+            )
+        else:
+            print_error(res)
 
         wait(WAIT_TIME)
 

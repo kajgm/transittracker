@@ -66,20 +66,25 @@ class display:
 
     def show_time(self):
         res = self.trnstApi.get_stop_info()
-        resJson = res.json()[0]
-        closestSchedule = resJson["Schedules"][0]
-        self.contextText.set(
-            "The next bus leaves in "
-            + str(closestSchedule["ExpectedCountdown"])
-            + "min at"
-        )
-        self.timeText.set(closestSchedule["ExpectedLeaveTime"].split(" ")[0])
-        self.scheduleText.set(
-            "["
-            + getScheduleLabel(closestSchedule["ScheduleStatus"])
-            + "] - Last updated at "
-            + closestSchedule["LastUpdate"]
-        )
+        if res.status_code == 200:
+            resJson = res.json()[0]
+            closestSchedule = resJson["Schedules"][0]
+            self.contextText.set(
+                "The next bus leaves in "
+                + str(closestSchedule["ExpectedCountdown"])
+                + "min at"
+            )
+            self.timeText.set(closestSchedule["ExpectedLeaveTime"].split(" ")[0])
+            self.scheduleText.set(
+                "["
+                + getScheduleLabel(closestSchedule["ScheduleStatus"])
+                + "] - Last updated at "
+                + closestSchedule["LastUpdate"]
+            )
+        else:
+            self.contextText.set("")
+            self.timeText.set("Error: " + res.status_code)
+            self.scheduleText.set(res.reason)
 
         self.root.after(self.waitTime * 1000, self.show_time)
 
