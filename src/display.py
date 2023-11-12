@@ -71,6 +71,9 @@ class display:
         if valid_status:
             resJson = res.json()[0]
             closestSchedule = resJson["Schedules"][0]
+
+            self.setColors(closestSchedule["ScheduleStatus"])
+
             self.contextText.set(
                 "The next bus leaves in "
                 + str(closestSchedule["ExpectedCountdown"])
@@ -89,6 +92,19 @@ class display:
             self.scheduleText.set(res.reason)
 
         self.root.after(self.waitTime * 1000, self.show_time)
+
+    def setColors(self, status):
+        color = "white"
+
+        match status:
+            case "*":
+                color = "white"
+            case "-":
+                color = "orange"
+            case "+":
+                color = "red"
+
+        self.timeLabel.config(fg=color)
 
     def start(self):
         self.root.attributes("-fullscreen", True)

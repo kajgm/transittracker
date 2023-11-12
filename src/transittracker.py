@@ -10,7 +10,7 @@ from commandLine import *
 def main(args):
     trnstApi = transitApi()
 
-    enable_display = args.display
+    enable_display = True  # args.display
 
     if enable_display:
         dsp = display(trnstApi, WAIT_TIME)
