@@ -104,7 +104,7 @@ class display:
             case "+":
                 color = "red"
 
-        self.timeLabel.config(fg=color)
+        self.timeLabel.config(foreground=color)
 
     def start(self):
         self.root.attributes("-fullscreen", True)
