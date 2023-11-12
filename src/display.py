@@ -66,7 +66,9 @@ class display:
 
     def show_time(self):
         res = self.trnstApi.get_stop_info()
-        if res.status_code == 200:
+        valid_status = check_response_status(res, False)
+
+        if valid_status:
             resJson = res.json()[0]
             closestSchedule = resJson["Schedules"][0]
             self.contextText.set(
@@ -81,14 +83,14 @@ class display:
                 + "] - Last updated at "
                 + closestSchedule["LastUpdate"]
             )
-        else:
+        elif res != None and res.status_code and res.reason:
             self.contextText.set("")
             self.timeText.set("Error: " + res.status_code)
             self.scheduleText.set(res.reason)
 
         self.root.after(self.waitTime * 1000, self.show_time)
 
-    def show_display(self):
+    def start(self):
         self.root.attributes("-fullscreen", True)
         self.root.config(background="black", cursor="none")
         self.root.bind("x", quit)

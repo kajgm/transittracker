@@ -41,4 +41,7 @@ def print_status(countdown, time, status, update_time):
 
 
 def print_error(res):
-    print("\nERROR: [" + str(res.status_code) + "] " + res.reason + "\n")
+    if res != None and res.status_code and res.reason:
+        print("\nERROR: [" + str(res.status_code) + "] " + res.reason + "\n")
+    else:
+        print("\nERROR: Api enpoint failure.")

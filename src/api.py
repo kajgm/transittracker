@@ -23,8 +23,9 @@ def get_api_key():
 
 
 class transitApi:
-    headers = None
+    api_key = None
     auth = None
+    headers = None
 
     def __init__(self):
         self.auth = ""
@@ -32,6 +33,7 @@ class transitApi:
         self.api_key = get_api_key()
 
     def get_stop_info(self):
+        res = None
         try:
             res = requests.get(
                 API_ENDPOINT + str(STOP) + "/estimates",
@@ -42,6 +44,5 @@ class transitApi:
             print(
                 f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
             )
-            res = {"status_code": "-1", "reason": "Failed to make requests call"}
 
         return res
