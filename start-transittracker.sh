@@ -4,4 +4,5 @@ export DISPLAY=:0
 xset s off
 xset -dpms
 xset s noblank
-python src/transittracker.py -d &
+cd src/
+python transittracker.py -d &
