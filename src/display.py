@@ -85,7 +85,7 @@ class display:
             )
         elif res != None and res.status_code and res.reason:
             self.contextText.set("")
-            self.timeText.set("Error: " + res.status_code)
+            self.timeText.set("Error: " + str(res.status_code))
             self.scheduleText.set(res.reason)
 
         self.root.after(self.waitTime * 1000, self.show_time)
