@@ -22,7 +22,9 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--display", required=False)
+    parser.add_argument(
+        "-d", "--display", required=False, default=False, action="store_true"
+    )
     args = parser.parse_args()
 
     try:
