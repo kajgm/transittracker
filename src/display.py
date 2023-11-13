@@ -64,7 +64,7 @@ class display:
             self.contextText.set(
                 "Next bus leaves at "
                 + closestSchedule["ExpectedLeaveTime"].split(" ")[0]
-                + "in"
+                + " in"
             )
             self.timeText.set(str(closestSchedule["ExpectedCountdown"]) + "min")
             self.setStatus(closestSchedule["ScheduleStatus"])
@@ -111,7 +111,7 @@ class display:
                 color = "red"
                 text = "Ahead of Schedule"
 
-        self.statusLabel.set(text)
+        self.statusText.set(text)
         self.statusLabel.config(foreground=color)
 
     def setLabels(self):
