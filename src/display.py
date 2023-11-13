@@ -86,6 +86,10 @@ class display:
                 + "] - Last updated at "
                 + closestSchedule["LastUpdate"]
             )
+        elif len(res.json()) == 0:
+            self.contextText.set("")
+            self.timeText.set("No busses currently available")
+            self.scheduleText.set("")
         elif res != None and res.status_code and res.reason:
             self.contextText.set("")
             self.timeText.set("Error: " + str(res.status_code))

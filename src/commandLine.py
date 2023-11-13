@@ -25,7 +25,11 @@ class commandLine:
                     closestSchedule["ScheduleStatus"],
                     closestSchedule["LastUpdate"],
                 )
-            else:
+            elif len(res.json()) == 0:
+                self.contextText.set("")
+                self.timeText.set("No busses currently available")
+                self.scheduleText.set("")
+            elif res != None and res.status_code and res.reason:
                 print_error(res)
 
             wait(WAIT_TIME)
