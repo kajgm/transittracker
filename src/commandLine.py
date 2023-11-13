@@ -31,9 +31,9 @@ class commandLine:
     trnstApi = None
     waitTime = None
 
-    def __init__(self, tApi, wtime):
+    def __init__(self, tApi, wTime):
         self.trnstApi = tApi
-        self.waitTime = wtime
+        self.waitTime = wTime
 
     def start(self):
         while 1:
@@ -58,4 +58,4 @@ class commandLine:
             else:
                 print("Error\n")
 
-            wait(self.wtime)
+            wait(self.waitTime)
