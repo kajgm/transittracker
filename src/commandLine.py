@@ -15,7 +15,7 @@ class commandLine:
             res = self.trnstApi.get_stop_info()
             valid_status = check_response_status(res, False)
 
-            if valid_status:
+            if valid_status and len(res.json()) > 0:
                 resJson = res.json()[0]
                 closestSchedule = resJson["Schedules"][0]
 
