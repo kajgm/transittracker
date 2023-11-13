@@ -88,8 +88,8 @@ class display:
             )
         elif len(res.json()) == 0:
             self.contextText.set("")
-            self.timeText.set("No busses currently available")
-            self.scheduleText.set("")
+            self.timeText.set("N/A")
+            self.scheduleText.set("No busses currently available")
         elif res != None and res.status_code and res.reason:
             self.contextText.set("")
             self.timeText.set("Error: " + str(res.status_code))
