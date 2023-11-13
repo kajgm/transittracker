@@ -124,7 +124,7 @@ class display:
         self.timeLabel.config(foreground=color)
 
     def wait(self):
-        if self.waitCounter <= WAIT_TIME:
+        if self.waitCounter < WAIT_TIME:
             self.waitCounter += 1
             dotString = ""
 
