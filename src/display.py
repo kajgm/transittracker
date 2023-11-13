@@ -68,15 +68,15 @@ class display:
             )
             self.timeText.set(str(closestSchedule["ExpectedCountdown"]) + "min")
             self.setStatus(closestSchedule["ScheduleStatus"])
-            self.scheduleText.set("Last updated at " + closestSchedule["LastUpdate"])
+            self.statusText.set("Last updated at " + closestSchedule["LastUpdate"])
         elif len(res.json()) == 0:
             self.contextText.set("")
             self.timeText.set("N/A")
-            self.scheduleText.set("No busses currently available")
+            self.statusText.set("No busses currently available")
         elif res != None and res.status_code and res.reason:
             self.contextText.set("")
             self.timeText.set("Error: " + str(res.status_code))
-            self.scheduleText.set(res.reason)
+            self.statusText.set(res.reason)
         else:
             self.timeText.set("Error")
 
