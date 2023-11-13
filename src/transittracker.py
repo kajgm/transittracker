@@ -6,6 +6,8 @@ from helpers import *
 from display import *
 from commandLine import *
 
+WAIT_TIME = 45  # time in seconds
+
 
 def main(args):
     trnstApi = transitApi()

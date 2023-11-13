@@ -7,6 +7,7 @@ from helpers import *
 class display:
     root = None
     trnstApi = None
+    waitTime = None
     waitCounter = 0
 
     waitText = None
@@ -25,8 +26,9 @@ class display:
     scheduleFont = None
     scheduleLabel = None
 
-    def __init__(self, tApi, wtime):
+    def __init__(self, tApi, wTime):
         self.root = Tk()
+        self.waitTime = wTime
 
         self.waitText = StringVar()
         self.contextText = StringVar()
@@ -74,31 +76,33 @@ class display:
 
         self.trnstApi = tApi
 
+    def start(self):
+        self.root.attributes("-fullscreen", True)
+        self.root.config(background="black", cursor="none")
+        self.root.bind("x", quit)
+        self.root.after(1000, self.show_time)
+
+        self.root.mainloop()
+
     def quit(self, *args):
         self.root.destroy()
 
     def show_time(self):
         res = self.trnstApi.get_stop_info()
-        valid_status = check_response_status(res, False)
 
-        if valid_status and len(res.json()) > 0:
+        if res.status_code == 200 and len(res.json()) > 0:
             resJson = res.json()[0]
             closestSchedule = resJson["Schedules"][0]
 
             self.setColors(closestSchedule["ScheduleStatus"])
 
             self.contextText.set(
-                "The next bus leaves in "
-                + str(closestSchedule["ExpectedCountdown"])
-                + "min at"
+                "Next bus leaves at "
+                + closestSchedule["ExpectedLeaveTime"].split(" ")[0]
+                + "in"
             )
-            self.timeText.set(closestSchedule["ExpectedLeaveTime"].split(" ")[0])
-            self.scheduleText.set(
-                "["
-                + getScheduleLabel(closestSchedule["ScheduleStatus"])
-                + "] - Last updated at "
-                + closestSchedule["LastUpdate"]
-            )
+            self.timeText.set(str(closestSchedule["ExpectedCountdown"]) + "min")
+            self.scheduleText.set("Last updated at " + closestSchedule["LastUpdate"])
         elif len(res.json()) == 0:
             self.contextText.set("")
             self.timeText.set("N/A")
@@ -124,7 +128,7 @@ class display:
         self.timeLabel.config(foreground=color)
 
     def wait(self):
-        if self.waitCounter < WAIT_TIME:
+        if self.waitCounter < self.waitTime:
             self.waitCounter += 1
             dotString = ""
 
@@ -136,11 +140,3 @@ class display:
         else:
             self.waitCounter = 0
             self.show_time()
-
-    def start(self):
-        self.root.attributes("-fullscreen", True)
-        self.root.config(background="black", cursor="none")
-        self.root.bind("x", quit)
-        self.root.after(1000, self.show_time)
-
-        self.root.mainloop()

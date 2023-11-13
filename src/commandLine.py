@@ -2,6 +2,20 @@ from helpers import *
 from format import *
 
 
+def getScheduleLabel(scheduleSymbol):
+    label = "On time"
+
+    match scheduleSymbol:
+        case "*":
+            label = "On time"
+        case "-":
+            label = "Late"
+        case "+":
+            label = "Ahead of schedule"
+
+    return label
+
+
 def wait(sec):
     # output the . -> .. -> ... waiting loop animation
     for j in range(sec):
@@ -25,9 +39,8 @@ class commandLine:
     def start(self):
         while 1:
             res = self.trnstApi.get_stop_info()
-            valid_status = check_response_status(res, False)
 
-            if valid_status and len(res.json()) > 0:
+            if res.status_code == 200 and len(res.json()) > 0:
                 resJson = res.json()[0]
                 closestSchedule = resJson["Schedules"][0]
 
@@ -44,4 +57,4 @@ class commandLine:
             elif res != None and res.status_code and res.reason:
                 print_error(res)
 
-            wait(WAIT_TIME)
+            wait(self.wtime)
