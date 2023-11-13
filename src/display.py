@@ -7,7 +7,11 @@ from helpers import *
 class display:
     root = None
     trnstApi = None
-    waitTime = None
+    waitCounter = 0
+
+    waitText = None
+    waitFont = None
+    waitLable = None
 
     contextText = None
     contextFont = None
@@ -24,14 +28,23 @@ class display:
     def __init__(self, tApi, wtime):
         self.root = Tk()
 
+        self.waitText = StringVar()
         self.contextText = StringVar()
         self.timeText = StringVar()
         self.scheduleText = StringVar()
 
+        self.waitFont = font.Font(family="Helvetica", size=20)
         self.contextFont = font.Font(family="Helvetica", size=20)
         self.timeFont = font.Font(family="Helvetica", size=50, weight="bold")
         self.scheduleFont = font.Font(family="Helvetica", size=20)
 
+        self.waitLabel = ttk.Label(
+            self.root,
+            textvariable=self.waitText,
+            font=self.waitFont,
+            foreground="white",
+            background="black",
+        )
         self.contextLabel = ttk.Label(
             self.root,
             textvariable=self.contextText,
@@ -54,12 +67,12 @@ class display:
             background="black",
         )
 
+        self.waitLabel.place(relx=0.5, rely=0, anchor=CENTER)
         self.contextLabel.place(relx=0.5, rely=0.2, anchor=CENTER)
         self.timeLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
         self.scheduleLabel.place(relx=0.5, rely=0.8, anchor=CENTER)
 
         self.trnstApi = tApi
-        self.waitTime = wtime
 
     def quit(self, *args):
         self.root.destroy()
@@ -95,7 +108,7 @@ class display:
             self.timeText.set("Error: " + str(res.status_code))
             self.scheduleText.set(res.reason)
 
-        self.root.after(self.waitTime * 1000, self.show_time)
+        self.wait()
 
     def setColors(self, status):
         color = "white"
@@ -109,6 +122,20 @@ class display:
                 color = "red"
 
         self.timeLabel.config(foreground=color)
+
+    def wait(self):
+        if self.waitCounter <= WAIT_TIME:
+            self.waitCounter += 1
+            dotString = ""
+
+            for i in range(self.waitCounter):
+                dotString += "."
+
+            self.waitText.set(dotString)
+            self.root.after(1000, self.wait)
+        else:
+            self.waitCounter = 0
+            self.show_time()
 
     def start(self):
         self.root.attributes("-fullscreen", True)
