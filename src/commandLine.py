@@ -1,4 +1,3 @@
-from helpers import *
 from format import *
 
 
@@ -56,5 +55,7 @@ class commandLine:
                 self.scheduleText.set("")
             elif res != None and res.status_code and res.reason:
                 print_error(res)
+            else:
+                print("Error\n")
 
             wait(self.wtime)

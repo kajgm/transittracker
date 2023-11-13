@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import font
-from helpers import *
 
 
 class display:
@@ -10,21 +9,23 @@ class display:
     waitTime = None
     waitCounter = 0
 
+    dispFont = None
+
     waitText = None
-    waitFont = None
-    waitLable = None
+    waitLabel = None
 
     contextText = None
-    contextFont = None
     contextLabel = None
 
     timeText = None
     timeFont = None
     timeLabel = None
 
-    scheduleText = None
-    scheduleFont = None
-    scheduleLabel = None
+    statusText = None
+    statusLabel = None
+
+    lastUpdateText = None
+    lastUpdateLabel = None
 
     def __init__(self, tApi, wTime):
         self.root = Tk()
@@ -33,46 +34,13 @@ class display:
         self.waitText = StringVar()
         self.contextText = StringVar()
         self.timeText = StringVar()
-        self.scheduleText = StringVar()
+        self.statusText = StringVar()
+        self.lastUpdateText = StringVar()
 
-        self.waitFont = font.Font(family="Helvetica", size=20)
-        self.contextFont = font.Font(family="Helvetica", size=20)
+        self.dispFont = font.Font(family="Helvetica", size=20)
         self.timeFont = font.Font(family="Helvetica", size=50, weight="bold")
-        self.scheduleFont = font.Font(family="Helvetica", size=20)
 
-        self.waitLabel = ttk.Label(
-            self.root,
-            textvariable=self.waitText,
-            font=self.waitFont,
-            foreground="white",
-            background="black",
-        )
-        self.contextLabel = ttk.Label(
-            self.root,
-            textvariable=self.contextText,
-            font=self.contextFont,
-            foreground="white",
-            background="black",
-        )
-        self.timeLabel = ttk.Label(
-            self.root,
-            textvariable=self.timeText,
-            font=self.timeFont,
-            foreground="white",
-            background="black",
-        )
-        self.scheduleLabel = ttk.Label(
-            self.root,
-            textvariable=self.scheduleText,
-            font=self.scheduleFont,
-            foreground="white",
-            background="black",
-        )
-
-        self.waitLabel.place(relx=0.5, rely=0, anchor=CENTER)
-        self.contextLabel.place(relx=0.5, rely=0.2, anchor=CENTER)
-        self.timeLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
-        self.scheduleLabel.place(relx=0.5, rely=0.8, anchor=CENTER)
+        self.setLabels()
 
         self.trnstApi = tApi
 
@@ -93,15 +61,13 @@ class display:
         if res.status_code == 200 and len(res.json()) > 0:
             resJson = res.json()[0]
             closestSchedule = resJson["Schedules"][0]
-
-            self.setColors(closestSchedule["ScheduleStatus"])
-
             self.contextText.set(
                 "Next bus leaves at "
                 + closestSchedule["ExpectedLeaveTime"].split(" ")[0]
                 + "in"
             )
             self.timeText.set(str(closestSchedule["ExpectedCountdown"]) + "min")
+            self.setStatus(closestSchedule["ScheduleStatus"])
             self.scheduleText.set("Last updated at " + closestSchedule["LastUpdate"])
         elif len(res.json()) == 0:
             self.contextText.set("")
@@ -111,21 +77,10 @@ class display:
             self.contextText.set("")
             self.timeText.set("Error: " + str(res.status_code))
             self.scheduleText.set(res.reason)
+        else:
+            self.timeText.set("Error")
 
         self.wait()
-
-    def setColors(self, status):
-        color = "white"
-
-        match status:
-            case "*":
-                color = "white"
-            case "-":
-                color = "orange"
-            case "+":
-                color = "red"
-
-        self.timeLabel.config(foreground=color)
 
     def wait(self):
         if self.waitCounter < self.waitTime:
@@ -140,3 +95,64 @@ class display:
         else:
             self.waitCounter = 0
             self.show_time()
+
+    def setStatus(self, status):
+        color = "white"
+        text = ""
+
+        match status:
+            case "*":
+                color = "white"
+                text = "On time"
+            case "-":
+                color = "orange"
+                text = "Delayed"
+            case "+":
+                color = "red"
+                text = "Ahead of Schedule"
+
+        self.statusLabel.set(text)
+        self.statusLabel.config(foreground=color)
+
+    def setLabels(self):
+        self.waitLabel = ttk.Label(
+            self.root,
+            textvariable=self.waitText,
+            font=self.dispFont,
+            foreground="white",
+            background="black",
+        )
+        self.contextLabel = ttk.Label(
+            self.root,
+            textvariable=self.contextText,
+            font=self.dispFont,
+            foreground="white",
+            background="black",
+        )
+        self.timeLabel = ttk.Label(
+            self.root,
+            textvariable=self.timeText,
+            font=self.timeFont,
+            foreground="white",
+            background="black",
+        )
+        self.statusLabel = ttk.Label(
+            self.root,
+            textvariable=self.statusText,
+            font=self.dispFont,
+            foreground="white",
+            background="black",
+        )
+        self.lastUpdateLabel = ttk.Label(
+            self.root,
+            textvariable=self.lastUpdateText,
+            font=self.dispFont,
+            foreground="white",
+            background="black",
+        )
+
+        self.waitLabel.place(relx=0.5, rely=0, anchor=CENTER)
+        self.contextLabel.place(relx=0.5, rely=0.2, anchor=CENTER)
+        self.timeLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
+        self.statusLabel.place(relx=0.5, rely=0.6, anchor=CENTER)
+        self.lastUpdateLabel.place(relx=0.5, rely=0.9, anchor=CENTER)

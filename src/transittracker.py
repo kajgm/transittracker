@@ -2,7 +2,6 @@ import sys
 import os
 import argparse
 from api import *
-from helpers import *
 from display import *
 from commandLine import *
 
