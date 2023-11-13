@@ -154,5 +154,5 @@ class display:
         self.waitLabel.place(relx=0.5, rely=0, anchor=CENTER)
         self.contextLabel.place(relx=0.5, rely=0.2, anchor=CENTER)
         self.timeLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
-        self.statusLabel.place(relx=0.5, rely=0.6, anchor=CENTER)
+        self.statusLabel.place(relx=0.5, rely=0.7, anchor=CENTER)
         self.lastUpdateLabel.place(relx=0.5, rely=0.9, anchor=CENTER)
