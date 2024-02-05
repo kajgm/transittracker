@@ -58,7 +58,7 @@ class display:
     def show_time(self):
         res = self.trnstApi.get_stop_info()
 
-        if res.status_code == 200 and len(res.json()) > 0:
+        if len(res.json()) > 0 and res.status_code == 200:
             resJson = res.json()[0]
             closestSchedule = resJson["Schedules"][0]
             self.contextText.set(

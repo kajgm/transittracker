@@ -4,7 +4,6 @@ import json
 from format import *
 
 API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
-STOP = 53656
 TOP_PATH = os.path.realpath("..")
 CRED_PATH = TOP_PATH + "/credentials.json"
 
@@ -26,17 +25,19 @@ class transitApi:
     api_key = None
     auth = None
     headers = None
+    stop = None
 
-    def __init__(self):
+    def __init__(self, stp):
         self.auth = ""
         self.headers = {"Accept": "application/json"}
         self.api_key = get_api_key()
+        self.stop = stp
 
     def get_stop_info(self):
         res = None
         try:
             res = requests.get(
-                API_ENDPOINT + str(STOP) + "/estimates",
+                API_ENDPOINT + str(self.stop) + "/estimates",
                 headers=self.headers,
                 params={"apiKey": self.api_key},
             )

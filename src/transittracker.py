@@ -6,12 +6,14 @@ from display import *
 from commandLine import *
 
 WAIT_TIME = 45  # time in seconds
+DEFAULT_STOP = 53656
 
 
 def main(args):
-    trnstApi = transitApi()
-
     enable_display = args.display
+    set_stop = args.stop or DEFAULT_STOP
+
+    trnstApi = transitApi(set_stop)
 
     if enable_display:
         dsp = display(trnstApi, WAIT_TIME)
@@ -26,6 +28,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-d", "--display", required=False, default=False, action="store_true"
     )
+    parser.add_argument("-s", "--stop", required=False)
     args = parser.parse_args()
 
     try:
