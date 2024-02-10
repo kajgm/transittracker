@@ -57,28 +57,30 @@ class display:
 
     def show_time(self):
         res = self.trnstApi.get_stop_info()
-
-        if len(res.json()) > 0 and res.status_code == 200:
-            resJson = res.json()[0]
-            closestSchedule = resJson["Schedules"][0]
-            self.contextText.set(
-                "Next bus leaves at "
-                + closestSchedule["ExpectedLeaveTime"].split(" ")[0]
-                + " in"
-            )
-            self.timeText.set(str(closestSchedule["ExpectedCountdown"]) + "min")
-            self.setStatus(closestSchedule["ScheduleStatus"])
-            self.lastUpdateText.set("Last updated at " + closestSchedule["LastUpdate"])
-        elif len(res.json()) == 0:
-            self.contextText.set("")
-            self.timeText.set("N/A")
-            self.lastUpdateText.set("No busses currently available")
-        elif res != None and res.status_code and res.reason:
-            self.contextText.set("")
-            self.timeText.set("Error: " + str(res.status_code))
-            self.lastUpdateText.set(res.reason)
+        if res:
+            if len(res.json()) > 0 and res.status_code == 200:
+                resJson = res.json()[0]
+                closestSchedule = resJson["Schedules"][0]
+                self.contextText.set(
+                    "Next bus leaves at "
+                    + closestSchedule["ExpectedLeaveTime"].split(" ")[0]
+                    + " in"
+                )
+                self.timeText.set(str(closestSchedule["ExpectedCountdown"]) + "min")
+                self.setStatus(closestSchedule["ScheduleStatus"])
+                self.lastUpdateText.set(
+                    "Last updated at " + closestSchedule["LastUpdate"]
+                )
+            elif len(res.json()) == 0:
+                self.contextText.set("")
+                self.timeText.set("N/A")
+                self.lastUpdateText.set("No busses currently available")
+            elif res != None and res.status_code and res.reason:
+                self.contextText.set("")
+                self.timeText.set("Error: " + str(res.status_code))
+                self.lastUpdateText.set(res.reason)
         else:
-            self.timeText.set("Error")
+            self.timeText.set("Error: Connection Issue")
 
         self.wait()
 

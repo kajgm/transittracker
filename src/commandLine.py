@@ -41,23 +41,24 @@ class commandLine:
         while 1:
             res = self.trnstApi.get_stop_info()
 
-            if len(res.json()) > 0 and res.status_code == 200:
-                resJson = res.json()[0]
-                closestSchedule = resJson["Schedules"][0]
+            if res:
+                if len(res.json()) > 0 and res.status_code == 200:
+                    resJson = res.json()[0]
+                    closestSchedule = resJson["Schedules"][0]
 
-                print_status(
-                    closestSchedule["ExpectedCountdown"],
-                    closestSchedule["ExpectedLeaveTime"],
-                    closestSchedule["ScheduleStatus"],
-                    closestSchedule["LastUpdate"],
-                )
-            elif len(res.json()) == 0:
-                self.contextText.set("")
-                self.timeText.set("No busses currently available")
-                self.scheduleText.set("")
-            elif res != None and res.status_code and res.reason:
-                print_error(res)
+                    print_status(
+                        closestSchedule["ExpectedCountdown"],
+                        closestSchedule["ExpectedLeaveTime"],
+                        closestSchedule["ScheduleStatus"],
+                        closestSchedule["LastUpdate"],
+                    )
+                elif len(res.json()) == 0:
+                    self.contextText.set("")
+                    self.timeText.set("No busses currently available")
+                    self.scheduleText.set("")
+                elif res != None and res.status_code and res.reason:
+                    print_error(res)
             else:
-                print("Error\n")
+                print("Error: Connection issue\n")
 
             wait(self.waitTime)
