@@ -80,7 +80,9 @@ class display:
                 self.timeText.set("Error: " + str(res.status_code))
                 self.lastUpdateText.set(res.reason)
         else:
-            self.timeText.set("Error: Connection Issue")
+            self.contextText.set("")
+            self.timeText.set("Error")
+            self.lastUpdateText.set("Error: Connection Issue")
 
         self.wait()
 
