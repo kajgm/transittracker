@@ -3,6 +3,8 @@
 TransitTracker is a simple python application I made to easily track when my next local bus would arrive.
 This application uses the [Translink API](https://www.translink.ca/about-us/doing-business-with-translink/app-developer-resources/rtti)
 
+![Example image](./example.JPG)
+
 ## Prerequisites
 
 - \>= [Python 3.11.0](https://www.python.org/downloads/)
