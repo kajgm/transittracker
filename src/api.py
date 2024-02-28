@@ -34,7 +34,7 @@ class transitApi:
         self.stop = stp
 
     def get_stop_info(self):
-        res = json.dumps({})
+        res = None
         try:
             res = requests.get(
                 API_ENDPOINT + str(self.stop) + "/estimates",
