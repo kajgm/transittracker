@@ -44,4 +44,4 @@ def print_error(res):
     if res != None and res.status_code and res.reason:
         print("\nERROR: [" + str(res.status_code) + "] " + res.reason + "\n")
     else:
-        print("\nERROR: Api enpoint failure.")
+        print("\nERROR: Api endpoint failure.")
