@@ -9,16 +9,19 @@ CRED_PATH = TOP_PATH + "/credentials.json"
 
 
 def get_api_key():
-    api_key = ""
+    translink_api_key = ""
+    transit_app_api_key = ""
     try:
         with open(CRED_PATH, "r") as json_file:
             api_json = json.load(json_file)
-        api_key = api_json["api_key"]
+        translink_api_key = api_json["translink_api_key"]
+        transit_app_api_key = api_json["transit_app_api_key"]
     except:
         print("credentials.json not found, please enter credentials")
-        api_key = input("api_key: ")
+        translink_api_key = input("translink_api_key: ")
+        transit_app_api_key = input("transit_app_api_key: ")
 
-    return api_key
+    return [translink_api_key, transit_app_api_key]
 
 
 class transitApi:
@@ -30,7 +33,7 @@ class transitApi:
     def __init__(self, stp):
         self.auth = ""
         self.headers = {"Accept": "application/json"}
-        self.api_key = get_api_key()
+        self.api_key = get_api_key()[0]
         self.stop = stp
 
     def get_stop_info(self):

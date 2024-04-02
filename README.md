@@ -1,7 +1,7 @@
 # TransitTracker
 
 TransitTracker is a simple python application I made to easily track when my next local bus would arrive.
-This application uses the [Translink API](https://www.translink.ca/about-us/doing-business-with-translink/app-developer-resources/rtti)
+This application uses the [Translink API](https://www.translink.ca/about-us/doing-business-with-translink/app-developer-resources/rtti) and optionally the [Transit App API](https://transitapp.com/apis).
 
 ![Example image](./example.JPG)
 
@@ -17,10 +17,11 @@ $ python -m pip install requests
 ## Usage
 
 1. To automate the authentication process, you can create a credentials.json file in the top level directory
-   > i.e. it should look something like:
+   > i.e. it should look something like (translink api mandatory, transit app api optional):
 
 ```
-{"api_key": "your_api_key"}
+{"translink_api_key": "your_translink_api_key",
+ "transit_app_api_key": "your_transit_app_api_key"}
 ```
 
 2. Run the app by navigating to /src/ and execute:
