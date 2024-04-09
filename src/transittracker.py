@@ -5,21 +5,24 @@ from api import *
 from display import *
 from commandLine import *
 
-WAIT_TIME = 45  # time in seconds
-DEFAULT_STOP = 53656
+# translink api has a limit of 1000 requests per day
+# see https://www.translink.ca/about-us/doing-business-with-translink/app-developer-resources/rtti
+TL_WAIT_TIME = 90  # time in seconds
+DEFAULT_TL_STOP = 53656
+DEFAULT_TA_STOP = "TSL:1893"
 
 
 def main(args):
     enable_display = args.display
-    set_stop = args.stop or DEFAULT_STOP
+    TL_stop = args.stop or DEFAULT_TL_STOP
 
-    trnstApi = transitApi(set_stop)
+    trnstApi = transitApi(TL_stop, DEFAULT_TA_STOP)
 
     if enable_display:
-        dsp = display(trnstApi, WAIT_TIME)
+        dsp = display(trnstApi, TL_WAIT_TIME)
         dsp.start()
     else:
-        cmdln = commandLine(trnstApi, WAIT_TIME)
+        cmdln = commandLine(trnstApi, TL_WAIT_TIME)
         cmdln.start()
 
 

@@ -3,7 +3,8 @@ import os
 import json
 from format import *
 
-API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
+TL_API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
+TA_API_ENDPOINT = "https://external.transitapp.com/v3/public/"
 TOP_PATH = os.path.realpath("..")
 CRED_PATH = TOP_PATH + "/credentials.json"
 
@@ -26,23 +27,44 @@ def get_api_key():
 
 class transitApi:
     api_key = None
-    auth = None
-    headers = None
-    stop = None
+    TL_headers = None
+    TA_auth = None
+    TL_stop = None
+    TA_stop = None
 
-    def __init__(self, stp):
-        self.auth = ""
-        self.headers = {"Accept": "application/json"}
-        self.api_key = get_api_key()[0]
-        self.stop = stp
+    def __init__(self, TL_stp, TA_stp):
+        api_keys = get_api_key()
+        self.TL_api_key = api_keys[0]
+        self.TA_api_key = api_keys[1]
+        self.TL_stop = TL_stp
+        self.TA_stop = TA_stp
 
-    def get_stop_info(self):
+    def get_TL_stop_info(self):
         res = None
         try:
             res = requests.get(
-                API_ENDPOINT + str(self.stop) + "/estimates",
-                headers=self.headers,
-                params={"apiKey": self.api_key},
+                TL_API_ENDPOINT + str(self.TL_stop) + "/estimates",
+                headers={"Accept": "application/json"},
+                params={"apiKey": self.TL_api_key},
+            )
+        except:
+            print(
+                f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
+            )
+
+        return res
+
+    def get_TA_stop_info(self):
+        res = None
+        try:
+            res = requests.get(
+                TA_API_ENDPOINT + "route_details",
+                headers={"apiKey": self.TA_api_key},
+                params={
+                    "global_route_id": self.TA_stop,
+                    "include_next_departure": True,
+                },
+                timeout=20,
             )
         except:
             print(
