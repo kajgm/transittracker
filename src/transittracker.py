@@ -9,14 +9,15 @@ from commandLine import *
 # see https://www.translink.ca/about-us/doing-business-with-translink/app-developer-resources/rtti
 TL_WAIT_TIME = 90  # time in seconds
 DEFAULT_TL_STOP = 53656
-DEFAULT_TA_STOP = "TSL:1893"
+DEFAULT_TA_STOP = "TSL:75044"
+DEFAULT_TA_ROUTE = "TSL:1893"
 
 
 def main(args):
     enable_display = args.display
     TL_stop = args.stop or DEFAULT_TL_STOP
 
-    trnstApi = transitApi(TL_stop, DEFAULT_TA_STOP)
+    trnstApi = transitApi(TL_stop, DEFAULT_TA_STOP, DEFAULT_TA_ROUTE)
 
     if enable_display:
         dsp = display(trnstApi, TL_WAIT_TIME)

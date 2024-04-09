@@ -85,7 +85,13 @@ class display:
 
     def start(self):
         def onClick(event):
-            res = self.trnstApi.get_TA_stop_info()
+            [depMin, isRealTime, depTime] = self.trnstApi.get_TA_stop_time()
+
+            contextLabel = "Next bus leaves at " + depTime + " in"
+            timeLabel = str(depMin) + "min"
+            updateLabel = ""
+            self.setLabels(contextLabel, timeLabel, updateLabel)
+            self.setStatus(isRealTime)
 
         self.root.bind("<Button-1>", onClick)
         self.root.attributes("-fullscreen", True)
@@ -171,6 +177,9 @@ class display:
             case "error":
                 color = "red"
                 text = "Error"
+            case True:
+                color = "green"
+                text = "Real Time"
 
         self.statusText.set(text)
         self.statusLabel.config(foreground=color)

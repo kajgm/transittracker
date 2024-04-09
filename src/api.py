@@ -1,6 +1,7 @@
 import requests
 import os
 import json
+import datetime
 from format import *
 
 TL_API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
@@ -31,13 +32,15 @@ class transitApi:
     TA_auth = None
     TL_stop = None
     TA_stop = None
+    TA_route = None
 
-    def __init__(self, TL_stp, TA_stp):
+    def __init__(self, TL_stp, TA_stp, TA_rt):
         api_keys = get_api_key()
         self.TL_api_key = api_keys[0]
         self.TA_api_key = api_keys[1]
         self.TL_stop = TL_stp
         self.TA_stop = TA_stp
+        self.TA_route = TA_rt
 
     def get_TL_stop_info(self):
         res = None
@@ -54,14 +57,14 @@ class transitApi:
 
         return res
 
-    def get_TA_stop_info(self):
+    def get_TA_itinerary_info(self):
         res = None
         try:
             res = requests.get(
                 TA_API_ENDPOINT + "route_details",
                 headers={"apiKey": self.TA_api_key},
                 params={
-                    "global_route_id": self.TA_stop,
+                    "global_route_id": self.TA_route,
                     "include_next_departure": True,
                 },
                 timeout=20,
@@ -72,3 +75,78 @@ class transitApi:
             )
 
         return res
+
+    def get_TA_stop_info(self):
+        res = None
+        try:
+            res = requests.get(
+                TA_API_ENDPOINT + "stop_departures",
+                headers={"apiKey": self.TA_api_key},
+                params={
+                    "global_stop_id": self.TA_stop,
+                },
+                timeout=20,
+            )
+        except:
+            print(
+                f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
+            )
+
+        return res
+
+    # this function gets more scheduled departures for a stop
+    def get_TA_route_time(self):
+        res = self.get_TA_itinerary_info()
+        itineraries = list(
+            filter(
+                lambda itnry: itnry["direction_headsign"]
+                == "Coquitlam Central Station",
+                res.json()["itineraries"],
+            )
+        )
+
+        stops = []
+
+        for itinerary in itineraries:
+            for stop in itinerary["stops"]:
+                if stop["stop_name"] == "Pitt River Rd / Mary Hill Rd Westbound":
+                    stops.append(stop)
+
+        departures = []
+
+        nowTime = datetime.datetime.now()
+
+        for stop in stops:
+            epochTime = stop["next_departure"]["departure_time"]
+            depTime = datetime.datetime.fromtimestamp(epochTime)
+            timeDiff = depTime - nowTime
+            timeLeft = divmod(timeDiff.total_seconds(), 60)[0]
+
+            # only get departures within a 2-hour timeframe
+            if timeLeft < 120:
+                departures.append(int(timeLeft))
+
+        return departures
+
+    # this function gets realtime departures for a stop
+    def get_TA_stop_time(self):
+
+        res = self.get_TA_stop_info()
+
+        nowTime = datetime.datetime.now()
+
+        # since this stop has only 1 route, we don't need to do any filtering and can index 0
+        # we should add the ability to filter routes later
+        schedItem = res.json()["route_departures"][0]["itineraries"][0][
+            "schedule_items"
+        ][0]
+
+        epochTime = schedItem["departure_time"]
+        isRealTime = schedItem["is_real_time"]
+
+        depTime = datetime.datetime.fromtimestamp(epochTime)
+        depString = depTime.strftime("%I:%M %p")
+        timeDiff = depTime - nowTime
+        timeLeft = divmod(timeDiff.total_seconds(), 60)[0]
+
+        return [int(timeLeft), isRealTime, depString]
