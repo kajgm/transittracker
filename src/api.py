@@ -94,7 +94,7 @@ class transitApi:
 
         return res
 
-    # this function gets more scheduled departures for a stop
+    # returns a list of scheduled departures for a route
     def get_TA_route_time(self):
         res = self.get_TA_itinerary_info()
         itineraries = list(
@@ -128,7 +128,7 @@ class transitApi:
 
         return departures
 
-    # this function gets realtime departures for a stop
+    # returns realtime departures for a stop
     def get_TA_stop_time(self):
 
         res = self.get_TA_stop_info()

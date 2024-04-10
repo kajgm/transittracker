@@ -1,6 +1,5 @@
-from tkinter import *
-from tkinter import ttk
-from tkinter import font
+import tkinter as tk
+from tkinter import ttk, font, StringVar
 
 
 class display:
@@ -11,8 +10,7 @@ class display:
 
     dispFont = None
 
-    waitText = None
-    waitLabel = None
+    progressBar = None
 
     contextText = None
     contextLabel = None
@@ -28,11 +26,10 @@ class display:
     lastUpdateLabel = None
 
     def __init__(self, tApi, wTime):
-        self.root = Tk()
+        self.root = tk.Tk()
         self.trnstApi = tApi
         self.waitTime = wTime
 
-        self.waitText = StringVar()
         self.contextText = StringVar()
         self.timeText = StringVar()
         self.statusText = StringVar()
@@ -41,13 +38,6 @@ class display:
         self.dispFont = font.Font(family="Helvetica", size=20)
         self.timeFont = font.Font(family="Helvetica", size=50, weight="bold")
 
-        self.waitLabel = ttk.Label(
-            self.root,
-            textvariable=self.waitText,
-            font=self.dispFont,
-            foreground="white",
-            background="black",
-        )
         self.contextLabel = ttk.Label(
             self.root,
             textvariable=self.contextText,
@@ -77,11 +67,24 @@ class display:
             background="black",
         )
 
-        self.waitLabel.place(relx=0.5, rely=0, anchor=CENTER)
-        self.contextLabel.place(relx=0.5, rely=0.2, anchor=CENTER)
-        self.timeLabel.place(relx=0.5, rely=0.5, anchor=CENTER)
-        self.statusLabel.place(relx=0.5, rely=0.7, anchor=CENTER)
-        self.lastUpdateLabel.place(relx=0.5, rely=0.9, anchor=CENTER)
+        s = ttk.Style()
+        s.configure(
+            "gray.Horizontal.TProgressbar",
+            troughcolor="black",
+            bordercolor="black",
+            background="gray",
+            lightcolor="black",
+            darkcolor="black",
+        )
+        self.progressBar = ttk.Progressbar(
+            style="gray.Horizontal.TProgressbar", orient=tk.HORIZONTAL, length=500
+        )
+
+        self.progressBar.place(relx=0.5, rely=0.05, anchor=tk.CENTER)
+        self.contextLabel.place(relx=0.5, rely=0.2, anchor=tk.CENTER)
+        self.timeLabel.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        self.statusLabel.place(relx=0.5, rely=0.7, anchor=tk.CENTER)
+        self.lastUpdateLabel.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
 
     def start(self):
         def onClick(event):
@@ -144,12 +147,7 @@ class display:
     def wait(self):
         if self.waitCounter < self.waitTime:
             self.waitCounter += 1
-            dotString = ""
-
-            for i in range(self.waitCounter):
-                dotString += "."
-
-            self.waitText.set(dotString)
+            self.progressBar.step((100 / self.waitTime))
             self.root.after(1000, self.wait)
         else:
             self.waitCounter = 0
