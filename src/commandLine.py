@@ -39,7 +39,7 @@ class commandLine:
 
     def start(self):
         while 1:
-            res = self.trnstApi.get_stop_info()
+            res = self.trnstApi.get_TL_stop_info()
 
             if res:
                 if len(res.json()) > 0 and res.status_code == 200:
