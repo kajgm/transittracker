@@ -33,14 +33,18 @@ class transitApi:
     TL_stop = None
     TA_stop = None
     TA_route = None
+    TA_name = None
+    TA_headsign = None
 
-    def __init__(self, TL_stp, TA_stp, TA_rt):
+    def __init__(self, TL_stp, TA_stp, TA_rt, TA_nm, TA_hsgn):
         api_keys = get_api_key()
         self.TL_api_key = api_keys[0]
         self.TA_api_key = api_keys[1]
         self.TL_stop = TL_stp
         self.TA_stop = TA_stp
         self.TA_route = TA_rt
+        self.TA_name = TA_nm
+        self.TA_headsign = TA_hsgn
 
     def get_TL_stop_info(self):
         res = None

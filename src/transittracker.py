@@ -11,13 +11,17 @@ TL_WAIT_TIME = 90  # time in seconds
 DEFAULT_TL_STOP = 53656
 DEFAULT_TA_STOP = "TSL:75044"
 DEFAULT_TA_ROUTE = "TSL:1893"
+DEFAULT_TA_NAME = "Pitt River Rd / Mary Hill Rd Westbound"
+DEFAULT_TA_HEADSIGN = "Coquitlam Central Station"
 
 
 def main(args):
     enable_display = args.display
     TL_stop = args.stop or DEFAULT_TL_STOP
 
-    trnstApi = transitApi(TL_stop, DEFAULT_TA_STOP, DEFAULT_TA_ROUTE)
+    trnstApi = transitApi(
+        TL_stop, DEFAULT_TA_STOP, DEFAULT_TA_ROUTE, DEFAULT_TA_NAME, DEFAULT_TA_HEADSIGN
+    )
 
     if enable_display:
         dsp = display(trnstApi, TL_WAIT_TIME)
