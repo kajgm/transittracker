@@ -3,7 +3,7 @@
 TransitTracker is a simple python application I made to easily track when my next local bus would arrive.
 This application uses the [Translink API](https://www.translink.ca/about-us/doing-business-with-translink/app-developer-resources/rtti) and optionally the [Transit App API](https://transitapp.com/apis).
 
-![Example image](./example.JPG)
+![Example image](./example.png)
 
 ## Prerequisites
 
@@ -24,10 +24,10 @@ $ python -m pip install requests
  "transit_app_api_key": "your_transit_app_api_key"}
 ```
 
-2. Run the app by navigating to /src/ and execute:
+2. Run the app by executing:
 
 ```
-$ python transittracker.py
+$ python start.py
 ```
 
 3. If you are running this on a raspberry pi, you can enable the display option with an automatic startup script:
@@ -39,5 +39,11 @@ $ ./start-transittracker.sh
 or
 
 ```
-$ python transittracker.py -d
+$ python start.py -d
+```
+
+if running on a desktop, you can limit the screen size to a small window using the -w flag
+
+```
+$ python start.py -w
 ```
