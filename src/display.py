@@ -5,6 +5,7 @@ from tkinter import ttk, font, StringVar
 class display:
     root = None
     trnstApi = None
+    windowFlag = None
     waitTime = None
     waitCounter = 0
 
@@ -25,9 +26,10 @@ class display:
     lastUpdateText = None
     lastUpdateLabel = None
 
-    def __init__(self, tApi, wTime):
+    def __init__(self, tApi, wndw, wTime):
         self.root = tk.Tk()
         self.trnstApi = tApi
+        self.windowFlag = wndw
         self.waitTime = wTime
 
         self.contextText = StringVar()
@@ -97,9 +99,14 @@ class display:
             self.setStatus(isRealTime)
 
         self.root.bind("<Button-1>", onClick)
-        self.root.attributes("-fullscreen", True)
+        if self.windowFlag:
+            self.root.geometry("480x320")
+        else:
+            self.root.attributes("-fullscreen", True)
         self.root.config(background="black", cursor="none")
         self.root.bind("x", quit)
+        self.root.title("TransitTracker")
+        self.root.iconbitmap("tt.ico")
         self.root.after(1000, self.show_time)
 
         self.root.mainloop()

@@ -1,6 +1,3 @@
-import sys
-import os
-import argparse
 from api import *
 from display import *
 from commandLine import *
@@ -15,8 +12,9 @@ DEFAULT_TA_NAME = "Pitt River Rd / Mary Hill Rd Westbound"
 DEFAULT_TA_HEADSIGN = "Coquitlam Central Station"
 
 
-def main(args):
-    enable_display = args.display
+def transittracker(args):
+    enable_display = args.display or args.window
+    windowed = args.window
     TL_stop = args.stop or DEFAULT_TL_STOP
 
     trnstApi = transitApi(
@@ -24,26 +22,8 @@ def main(args):
     )
 
     if enable_display:
-        dsp = display(trnstApi, TL_WAIT_TIME)
+        dsp = display(trnstApi, windowed, TL_WAIT_TIME)
         dsp.start()
     else:
         cmdln = commandLine(trnstApi, TL_WAIT_TIME)
         cmdln.start()
-
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-d", "--display", required=False, default=False, action="store_true"
-    )
-    parser.add_argument("-s", "--stop", required=False)
-    args = parser.parse_args()
-
-    try:
-        main(args)
-    except KeyboardInterrupt:
-        print("\nExiting")
-        try:
-            sys.exit(0)
-        except SystemExit:
-            os._exit(1)
