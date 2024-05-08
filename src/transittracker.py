@@ -16,8 +16,8 @@ DEFAULT_TA_HEADSIGN = "Coquitlam Central Station"
 
 
 def main(args):
-    enable_display = args.display or args.window
-    windowed = args.window
+    enable_display = args.display or args.fullscreen
+    fullscreen = args.fullscreen
     TL_stop = args.stop or DEFAULT_TL_STOP
 
     trnstApi = transitApi(
@@ -25,7 +25,7 @@ def main(args):
     )
 
     if enable_display:
-        dsp = display(trnstApi, windowed, TL_WAIT_TIME)
+        dsp = display(trnstApi, fullscreen, TL_WAIT_TIME)
         dsp.start()
     else:
         cmdln = commandLine(trnstApi, TL_WAIT_TIME)
@@ -38,7 +38,7 @@ if __name__ == "__main__":
         "-d", "--display", required=False, default=False, action="store_true"
     )
     parser.add_argument(
-        "-w", "--window", required=False, default=False, action="store_true"
+        "-f", "--fullscreen", required=False, default=False, action="store_true"
     )
     parser.add_argument("-s", "--stop", required=False)
     args = parser.parse_args()
