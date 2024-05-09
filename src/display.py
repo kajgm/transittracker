@@ -107,7 +107,10 @@ class display:
         self.root.config(background="black", cursor="none")
         self.root.bind("x", quit)
         self.root.title("TransitTracker")
-        self.root.iconbitmap("../tt.ico")
+        try:
+            self.root.iconbitmap("../tt.ico")
+        except:
+            logging.warning(".ico files not supported, will not use custom icons")
         self.root.after(1000, self.show_time)
 
         self.root.mainloop()

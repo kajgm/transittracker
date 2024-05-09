@@ -34,7 +34,9 @@ def main(args):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, filename="transittracker.log", filemode="w")
+    logging.basicConfig(
+        level=logging.INFO, filename="../logs/transittracker.log", filemode="w"
+    )
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
