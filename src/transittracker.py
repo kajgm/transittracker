@@ -1,6 +1,7 @@
 import sys
 import os
 import argparse
+import logging
 from api import *
 from display import *
 from commandLine import *
@@ -33,6 +34,8 @@ def main(args):
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, filename="transittracker.log", filemode="w")
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-d", "--display", required=False, default=False, action="store_true"

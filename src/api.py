@@ -1,6 +1,7 @@
 import requests
 import json
 import datetime
+import logging
 from format import *
 
 TL_API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
@@ -46,21 +47,25 @@ class transitApi:
     def get_TL_stop_info(self):
         res = None
         try:
+            logging.info("Attempting to get translink api data")
             res = requests.get(
                 TL_API_ENDPOINT + str(self.TL_stop) + "/estimates",
                 headers={"Accept": "application/json"},
                 params={"apiKey": self.TL_api_key},
             )
+            logging.info("Successfully retrieved translink api data")
         except:
             print(
                 f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
             )
+            logging.exception("Error in get_TL_stop_info")
 
         return res
 
     def get_TA_itinerary_info(self):
         res = None
         try:
+            logging.info("Attempting to get transit app api data")
             res = requests.get(
                 TA_API_ENDPOINT + "route_details",
                 headers={"apiKey": self.TA_api_key},
@@ -70,16 +75,19 @@ class transitApi:
                 },
                 timeout=20,
             )
+            logging.info("Successfully retrieved transit app api data")
         except:
             print(
                 f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
             )
+            logging.exception("Error in get_TA_itinerary_info")
 
         return res
 
     def get_TA_stop_info(self):
         res = None
         try:
+            logging.info("Attempting to get transit app api data")
             res = requests.get(
                 TA_API_ENDPOINT + "stop_departures",
                 headers={"apiKey": self.TA_api_key},
@@ -88,10 +96,12 @@ class transitApi:
                 },
                 timeout=20,
             )
+            logging.info("Successfully retrieved transit app api data")
         except:
             print(
                 f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
             )
+            logging.exception("Error in get_TA_stop_info")
 
         return res
 

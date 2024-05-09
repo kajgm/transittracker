@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 from tkinter import ttk, font, StringVar
 
@@ -115,41 +116,49 @@ class display:
         self.root.destroy()
 
     def show_time(self):
-        res = self.trnstApi.get_TL_stop_info()
-        if res:
-            if len(res.json()) > 0 and res.status_code == 200:
-                resJson = res.json()[0]
-                closestSchedule = resJson["Schedules"][0]
-                contextLabel = (
-                    "Next bus leaves at "
-                    + closestSchedule["ExpectedLeaveTime"].split(" ")[0]
-                    + " in"
+        try:
+            res = self.trnstApi.get_TL_stop_info()
+            if res:
+                if len(res.json()) > 0 and res.status_code == 200:
+                    resJson = res.json()[0]
+                    closestSchedule = resJson["Schedules"][0]
+                    contextLabel = (
+                        "Next bus leaves at "
+                        + closestSchedule["ExpectedLeaveTime"].split(" ")[0]
+                        + " in"
+                    )
+                    timeLabel = str(closestSchedule["ExpectedCountdown"]) + "min"
+                    updateLabel = "Last updated at " + closestSchedule["LastUpdate"]
+                    self.setLabels(contextLabel, timeLabel, updateLabel)
+                    self.setStatus(closestSchedule["ScheduleStatus"])
+                elif len(res.json()) == 0:
+                    contextLabel = ""
+                    timeLabel = "N/A"
+                    updateLabel = "No busses currently available"
+                    self.setLabels(contextLabel, timeLabel, updateLabel)
+                    self.setStatus("error")
+                elif res != None and res.status_code and res.reason:
+                    contextLabel = ""
+                    timeLabel = "Error: " + str(res.status_code)
+                    updateLabel = res.reason
+                    self.setLabels(contextLabel, timeLabel, updateLabel)
+                    self.setStatus("error")
+            else:
+                logging.warning(
+                    "Unable to retrieve api data, trying again in "
+                    + str(self.wait)
+                    + " seconds"
                 )
-                timeLabel = str(closestSchedule["ExpectedCountdown"]) + "min"
-                updateLabel = "Last updated at " + closestSchedule["LastUpdate"]
-                self.setLabels(contextLabel, timeLabel, updateLabel)
-                self.setStatus(closestSchedule["ScheduleStatus"])
-            elif len(res.json()) == 0:
                 contextLabel = ""
-                timeLabel = "N/A"
-                updateLabel = "No busses currently available"
+                timeLabel = "Error"
+                updateLabel = "Error: Connection Issue"
                 self.setLabels(contextLabel, timeLabel, updateLabel)
                 self.setStatus("error")
-            elif res != None and res.status_code and res.reason:
-                contextLabel = ""
-                timeLabel = "Error: " + str(res.status_code)
-                updateLabel = res.reason
-                self.setLabels(contextLabel, timeLabel, updateLabel)
-                self.setStatus("error")
-        else:
-            contextLabel = ""
-            timeLabel = "Error"
-            updateLabel = "Error: Connection Issue"
-            self.setLabels(contextLabel, timeLabel, updateLabel)
-            self.setStatus("error")
-            print("Trying again in " + str(self.wait) + " seconds")
+                print("Trying again in " + str(self.wait) + " seconds")
 
-        self.wait()
+            self.wait()
+        except Exception as err:
+            logging.exception("Error retrieving api data")
 
     def wait(self):
         if self.waitCounter < self.waitTime:
