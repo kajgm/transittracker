@@ -157,11 +157,11 @@ class display:
                 updateLabel = "Error: Connection Issue"
                 self.setLabels(contextLabel, timeLabel, updateLabel)
                 self.setStatus("error")
-                print("Trying again in " + str(self.wait) + " seconds")
 
-            self.wait()
         except Exception as err:
             logging.exception("Error retrieving api data")
+
+        self.wait()
 
     def wait(self):
         if self.waitCounter < self.waitTime:

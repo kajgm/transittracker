@@ -44,8 +44,8 @@ class transitApi:
         self.TA_name = TA_nm
         self.TA_headsign = TA_hsgn
 
+    # translink estimates
     def get_TL_stop_info(self):
-        res = None
         try:
             logging.info("Attempting to get translink api data")
             res = requests.get(
@@ -55,15 +55,12 @@ class transitApi:
             )
             logging.info("Successfully retrieved translink api data")
         except:
-            print(
-                f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
-            )
-            logging.exception("Error in get_TL_stop_info")
+            res = None
 
         return res
 
+    # transit app realtime info
     def get_TA_itinerary_info(self):
-        res = None
         try:
             logging.info("Attempting to get transit app api data")
             res = requests.get(
@@ -77,15 +74,11 @@ class transitApi:
             )
             logging.info("Successfully retrieved transit app api data")
         except:
-            print(
-                f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
-            )
-            logging.exception("Error in get_TA_itinerary_info")
+            res = None
 
         return res
 
     def get_TA_stop_info(self):
-        res = None
         try:
             logging.info("Attempting to get transit app api data")
             res = requests.get(
@@ -98,10 +91,7 @@ class transitApi:
             )
             logging.info("Successfully retrieved transit app api data")
         except:
-            print(
-                f"{tformatting.FAIL}Error: Failed to perform get request{tformatting.ENDC}"
-            )
-            logging.exception("Error in get_TA_stop_info")
+            res = None
 
         return res
 
@@ -141,16 +131,13 @@ class transitApi:
 
     # returns realtime departures for a stop
     def get_TA_stop_time(self):
-
         res = self.get_TA_stop_info()
-
         nowTime = datetime.datetime.now()
 
         # since this stop has only 1 route, we don't need to do any filtering and can index 0
         # we should add the ability to filter routes later
-        schedItem = res.json()["route_departures"][0]["itineraries"][0][
-            "schedule_items"
-        ][0]
+        schedItem = res.json()["route_departures"][0]["itineraries"][0]
+        ["schedule_items"][0]
 
         epochTime = schedItem["departure_time"]
         isRealTime = schedItem["is_real_time"]

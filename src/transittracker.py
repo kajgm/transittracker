@@ -51,7 +51,6 @@ if __name__ == "__main__":
     try:
         main(args)
     except KeyboardInterrupt:
-        print("\nExiting")
         try:
             sys.exit(0)
         except SystemExit:
