@@ -15,6 +15,9 @@ DEFAULT_TA_ROUTE = "TSL:1893"
 DEFAULT_TA_NAME = "Pitt River Rd / Mary Hill Rd Westbound"
 DEFAULT_TA_HEADSIGN = "Coquitlam Central Station"
 
+dirname = os.path.dirname(__file__)
+logpath = os.path.join(dirname, "../logs/transittracker.log")
+
 
 def main(args):
     enable_display = args.display or args.fullscreen
@@ -34,9 +37,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(
-        level=logging.INFO, filename="../logs/transittracker.log", filemode="w"
-    )
+    logging.basicConfig(level=logging.INFO, filename=logpath, filemode="w")
 
     parser = argparse.ArgumentParser()
     parser.add_argument(

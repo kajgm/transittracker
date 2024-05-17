@@ -2,17 +2,21 @@ import requests
 import json
 import datetime
 import logging
+import os
 from format import *
 
 TL_API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
 TA_API_ENDPOINT = "https://external.transitapp.com/v3/public/"
+
+dirname = os.path.dirname(__file__)
+credentialpath = os.path.join(dirname, "../credentials.json")
 
 
 def get_api_key():
     translink_api_key = ""
     transit_app_api_key = ""
     try:
-        with open("../credentials.json", "r") as json_file:
+        with open(credentialpath, "r") as json_file:
             api_json = json.load(json_file)
         translink_api_key = api_json["translink_api_key"]
         transit_app_api_key = api_json["transit_app_api_key"]

@@ -1,6 +1,10 @@
 import logging
+import os
 import tkinter as tk
 from tkinter import ttk, font, StringVar
+
+dirname = os.path.dirname(__file__)
+iconpath = os.path.join(dirname, "../tt.ico")
 
 
 class display:
@@ -108,7 +112,7 @@ class display:
         self.root.bind("x", quit)
         self.root.title("TransitTracker")
         try:
-            self.root.iconbitmap("../tt.ico")
+            self.root.iconbitmap(iconpath)
         except:
             logging.warning(".ico files not supported, will not use custom icons")
         self.root.after(1000, self.show_time)
