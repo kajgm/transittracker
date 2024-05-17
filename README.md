@@ -47,3 +47,20 @@ if running on a desktop, you can limit the screen size to a small window using t
 ```
 $ python start.py -w
 ```
+
+## Auto start
+
+To enable script auto start on bootup, run
+
+```
+$ sudo nano ~/.bashrc
+```
+
+to edit your `.bashrc` file and add the following lines:
+
+> make sure to edit the `<username>` field with your username
+
+```
+#run transittracker on startup
+/home/<username>/transittracker/start-transittracker.sh
+```
