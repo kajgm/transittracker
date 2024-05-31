@@ -2,6 +2,7 @@ import sys
 import os
 import argparse
 import logging
+import json
 from api import *
 from display import *
 from commandLine import *
@@ -24,8 +25,18 @@ def main(args):
     fullscreen = args.fullscreen
     TL_stop = args.stop or DEFAULT_TL_STOP
 
+    api_keys = get_credentials()
+    if not api_keys:
+        return
+
     trnstApi = transitApi(
-        TL_stop, DEFAULT_TA_STOP, DEFAULT_TA_ROUTE, DEFAULT_TA_NAME, DEFAULT_TA_HEADSIGN
+        api_keys[0],
+        api_keys[1],
+        TL_stop,
+        DEFAULT_TA_STOP,
+        DEFAULT_TA_ROUTE,
+        DEFAULT_TA_NAME,
+        DEFAULT_TA_HEADSIGN,
     )
 
     if enable_display:
@@ -34,6 +45,29 @@ def main(args):
     else:
         cmdln = commandLine(trnstApi, TL_WAIT_TIME)
         cmdln.start()
+
+
+def get_credentials():
+    translink_api_key = ""
+    transit_app_api_key = ""
+    try:
+        with open(credentialpath, "r") as json_file:
+            api_json = json.load(json_file)
+        translink_api_key = api_json["translink_api_key"]
+        transit_app_api_key = api_json["transit_app_api_key"]
+    except:
+        print(
+            "ERROR: credentials.json not found, please enter your translink api key followed by your transit app api key"
+        )
+        print("(leave blank if not applicable)")
+        try:
+            translink_api_key = input()
+            transit_app_api_key = input()
+        except:
+            print("ERROR: credentials not provided as arguments")
+            return None
+
+    return [translink_api_key, transit_app_api_key]
 
 
 if __name__ == "__main__":

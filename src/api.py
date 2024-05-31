@@ -1,9 +1,8 @@
 import requests
-import json
+
 import datetime
 import logging
 import os
-import sys
 from format import *
 
 TL_API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
@@ -11,30 +10,6 @@ TA_API_ENDPOINT = "https://external.transitapp.com/v3/public/"
 
 dirname = os.path.dirname(__file__)
 credentialpath = os.path.join(dirname, "../credentials.json")
-
-
-def get_api_key():
-    translink_api_key = ""
-    transit_app_api_key = ""
-    try:
-        with open(credentialpath, "r") as json_file:
-            api_json = json.load(json_file)
-        translink_api_key = api_json["translink_api_key"]
-        transit_app_api_key = api_json["transit_app_api_key"]
-    except:
-        print(
-            "ERROR: credentials.json not found, please enter your translink api key followed by your transit app api key"
-        )
-        print("(leave blank if not applicable)")
-        try:
-            translink_api_key = input()
-            transit_app_api_key = input()
-        except:
-            print("ERROR: credentials not provided as arguments")
-        finally:
-            sys.exit(1)
-
-    return [translink_api_key, transit_app_api_key]
 
 
 class transitApi:
@@ -47,10 +22,9 @@ class transitApi:
     TA_name = None
     TA_headsign = None
 
-    def __init__(self, TL_stp, TA_stp, TA_rt, TA_nm, TA_hsgn):
-        api_keys = get_api_key()
-        self.TL_api_key = api_keys[0]
-        self.TA_api_key = api_keys[1]
+    def __init__(self, TL_key, TA_key, TL_stp, TA_stp, TA_rt, TA_nm, TA_hsgn):
+        self.TL_api_key = TL_key
+        self.TA_api_key = TA_key
         self.TL_stop = TL_stp
         self.TA_stop = TA_stp
         self.TA_route = TA_rt
