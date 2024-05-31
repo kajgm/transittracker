@@ -123,8 +123,9 @@ class transitApi:
 
         # since this stop has only 1 route, we don't need to do any filtering and can index 0
         # we should add the ability to filter routes later
-        schedItem = res.json()["route_departures"][0]["itineraries"][0]
-        ["schedule_items"][0]
+        schedItem = res.json()["route_departures"][0]["itineraries"][0][
+            "schedule_items"
+        ][0]
 
         epochTime = schedItem["departure_time"]
         isRealTime = schedItem["is_real_time"]
