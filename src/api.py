@@ -22,10 +22,13 @@ def get_api_key():
         translink_api_key = api_json["translink_api_key"]
         transit_app_api_key = api_json["transit_app_api_key"]
     except:
-        print("ERROR: credentials.json not found, please enter credentials")
+        print(
+            "ERROR: credentials.json not found, please enter your translink api key followed by your transit app api key"
+        )
+        print("(leave blank if not applicable)")
         try:
-            translink_api_key = input("translink_api_key: ")
-            transit_app_api_key = input("transit_app_api_key: ")
+            translink_api_key = input()
+            transit_app_api_key = input()
         except:
             print("ERROR: credentials not provided as arguments")
             sys.exit(1)
