@@ -3,6 +3,7 @@ import json
 import datetime
 import logging
 import os
+import sys
 from format import *
 
 TL_API_ENDPOINT = "http://api.translink.ca/RTTIAPI/V1/stops/"
@@ -21,9 +22,13 @@ def get_api_key():
         translink_api_key = api_json["translink_api_key"]
         transit_app_api_key = api_json["transit_app_api_key"]
     except:
-        print("credentials.json not found, please enter credentials")
-        translink_api_key = input("translink_api_key: ")
-        transit_app_api_key = input("transit_app_api_key: ")
+        print("ERROR: credentials.json not found, please enter credentials")
+        try:
+            translink_api_key = input("translink_api_key: ")
+            transit_app_api_key = input("transit_app_api_key: ")
+        except:
+            print("ERROR: credentials not provided as arguments")
+            sys.exit(1)
 
     return [translink_api_key, transit_app_api_key]
 
