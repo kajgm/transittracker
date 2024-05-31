@@ -50,17 +50,15 @@ $ python start.py -w
 
 ## Auto start
 
-To enable script auto start on bootup, run
-
-```
-$ sudo nano ~/.bashrc
-```
-
-to edit your `.bashrc` file and add the following lines:
+To enable script auto start on bootup, create an entry within `~/.config/autostart/.desktop` with the following lines:
 
 > make sure to edit the `<username>` field with your username
 
 ```
-#run transittracker on startup
-/home/<username>/transittracker/start-transittracker.sh
+[Desktop Entry]
+Version=1.0
+Type=Application
+Terminal=false
+Exec='/home/<username>/transittracker/start-transittracker.sh'
+Name=transittracker
 ```
