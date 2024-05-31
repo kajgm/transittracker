@@ -16,7 +16,7 @@ DEFAULT_TA_NAME = "Pitt River Rd / Mary Hill Rd Westbound"
 DEFAULT_TA_HEADSIGN = "Coquitlam Central Station"
 
 dirname = os.path.dirname(__file__)
-logpath = os.path.join(dirname, "../logs/transittracker.log")
+logpath = os.path.join(dirname, "../transittracker.log")
 
 
 def main(args):
