@@ -31,9 +31,8 @@ def get_api_key():
             transit_app_api_key = input()
         except:
             print("ERROR: credentials not provided as arguments")
-
-    if not translink_api_key and not transit_app_api_key:
-        sys.exit(1)
+        finally:
+            sys.exit(1)
 
     return [translink_api_key, transit_app_api_key]
 
